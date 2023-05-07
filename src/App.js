@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
-function App() {
+import todos from "./data/Todsdata";
+import AllTask from "./Components/AllTask";
+import useTraverseTree from "./hooks/useTraverseTree";
+
+export default function App() {
+  const[todoData , setTododata] =useState(todos)
+  const {insertNode} = useTraverseTree()
+
+  const handleInsertNode = (folderId, item, isMain) => {
+    const finalData = insertNode(todoData, folderId, item, isMain)
+    console.log(finalData)
+    setTododata(finalData)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AllTask handleInserNode ={handleInsertNode} todo = {todoData}/>
+      
     </div>
   );
 }
-
-export default App;
