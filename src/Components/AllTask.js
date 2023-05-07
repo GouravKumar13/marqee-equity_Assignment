@@ -26,19 +26,20 @@ const AllTask = ({ handleInserNode, todo }) => {
 
     return todo.isMain ? (
 
-        <div >
+        <div  style={{width:'100%'}}>
 
-            <div style={ { display: 'flex', gap: 50, justifyContent: 'center'} }>
+            <div style={ { display: 'flex', gap: 50, justifyContent: 'center',alignItems:'center'} }>
                 <span style={ { cursor: 'pointer' } } onClick={ () => setExpand(!expand) }>📗{ todo.name }</span>
                 <div >
-                    <button onClick={ (e) => handleNewTask(e, true) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+mainTask</button>
-                    <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>
+                    <button onClick={ (e) => handleNewTask(e, true) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+SubTask</button>
+                    {/* {!todo.items.length === 0 ? <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>:} */}
+                    <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+MainTask</button>
                 </div>
             </div>
 
-            <div style={ { display: expand ? "block" : "none", paddingLeft: 20 } } >
+            <div style={ { display: expand ? "flex" : "none", paddingLeft: 30 , justifyContent:'center',flexDirection:'column',gap:20 } } >
                 { showInput.visible && (
-                    <div><span>{ showInput.isMain ? "📗" : "📄" }</span>
+                    <div style={{display:'flex',justifyContent:'center'}}><span>{ showInput.isMain ? "📗" : "📄" }</span>
                         <input placeholder='type....' autoFocus
                             type='text'
                             onBlur={ () => { setShowInput({ ...showInput, visible: false }) } }
@@ -49,6 +50,6 @@ const AllTask = ({ handleInserNode, todo }) => {
                 { todo.items.map((items) => (
                     <AllTask handleInserNode={ handleInserNode} todo={ items } key={ items.id } />
                 )) }</div>
-        </div>) : (<span style={ { display: 'flex', cursor: 'pointer' } } >📄{ todo.name }</span>)
+        </div>) : (<span style={ { display: 'flex', justifyContent:'center', cursor: 'pointer' } } >📄{ todo.name }</span>)
 }
 export default AllTask   
