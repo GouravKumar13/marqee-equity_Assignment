@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Header from './Header';
+
+import { Card } from '@mui/material';
 
 const AllTask = (props) => {
-   const { handleInsertNode, todo, isLogin } = props
+    const { handleInsertNode, todo, isLogin } = props
 
     const navigate = useNavigate();
     const [expand, setExpand] = useState(false)
@@ -36,35 +37,36 @@ const AllTask = (props) => {
             navigate('/')
         }
     }, [])
-    return(<>
+    return (<>
 
-        {todo.isMain ? (
+        { todo.isMain ? (
+            <Card >
+                <div className="flex flex-col justify-center items-center  gap-4" >
 
-        <div className="flex flex-col justify-center items-center  gap-4" >
+                    <div className="flex gap-2 text-center ">
+                        <span className="font-serif font-semibold">📗{ todo.name }</span>
+                        <div className="flex  gap-1">
+                            <button onClick={ (e) => handleNewTask(e, true) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium">MainTask</button>
+                            {/* {!todos.items.length === 0 ? <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>:} */ }
+                            <button onClick={ (e) => handleNewTask(e, false) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium" >SubTask</button>
+                        </div>
+                    </div>
 
-            <div className="flex gap-2 text-center ">
-                <span className="font-serif font-semibold">📗{ todo.name }</span>
-                <div className="flex  gap-1">
-                    <button onClick={ (e) => handleNewTask(e, true) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium">MainTask</button>
-                    {/* {!todos.items.length === 0 ? <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>:} */ }
-                    <button onClick={ (e) => handleNewTask(e, false) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium" >SubTask</button>
-                </div>
-            </div>
+                    <div className={ `${expand ? "block" : "hidden"} justify-center pl-12 ` }  >
+                        { showInput.visible && (
+                            <div  ><span>{ showInput.isMain ? "📗" : "📄" }</span>
+                                <input placeholder='type....' autoFocus
+                                    type='text'
+                                    onBlur={ () => { setShowInput({ ...showInput, visible: false }) } }
+                                    onKeyDown={ addNewTask }
 
-            <div className={ `${expand ? "flex" : "hidden"} justify-center  ` }  >
-                { showInput.visible && (
-                    <div  ><span>{ showInput.isMain ? "📗" : "📄" }</span>
-                        <input placeholder='type....' autoFocus
-                            type='text'
-                            onBlur={ () => { setShowInput({ ...showInput, visible: false }) } }
-                            onKeyDown={ addNewTask }
-
-                        /></div>
-                ) }
-                { todo.items.map((items) => (
-                    <AllTask todo={ items } handleInsertNode={ handleInsertNode } />
-                )) }</div>
-        </div>) : (<span >📄{ todo.name }</span>)}
+                                /></div>
+                        ) }
+                        { todo.items.map((items) => (
+                            <AllTask todo={ items } handleInsertNode={ handleInsertNode } />
+                        )) }</div>
+                </div></Card>
+        ) : (<span  className='flex'>📄{ todo.name }</span>) }
     </>
     )
 }
