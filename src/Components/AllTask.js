@@ -1,22 +1,13 @@
 
-import todos from "../data/Todsdata";
 
-import useTraverseTree from "../hooks/useTraverseTree"
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Header from './Header';
 
-import React, { useState } from 'react'
+const AllTask = (props) => {
+   const { handleInsertNode, todo, isLogin } = props
 
-const AllTask = () => {
-    const [todosData, settododata] = useState(todos)
-  const { insertNode } = useTraverseTree()
-  
-
-  const handleInsertNode = (folderId, item, isMain) => {
-    const finalData = insertNode(todosData, folderId, item, isMain)
-    console.log(finalData)
-    settododata(finalData)
-  }
-
-
+    const navigate = useNavigate();
     const [expand, setExpand] = useState(false)
     const [showInput, setShowInput] = useState({
         visible: false,
@@ -34,24 +25,33 @@ const AllTask = () => {
     }
     const addNewTask = (e) => {
         if ((e.keyCode === 13) && e.target.value) {
-            handleInsertNode(todosData.id, e.target.value, showInput.isMain)
+            handleInsertNode(todo.id, e.target.value, showInput.isMain)
             setShowInput({ ...showInput, visible: false })
         }
     }
-    return todosData.isMain ? (
 
-        <div className="flex flex-col justify-center items-center  mt-24" >
+
+    useEffect(() => {
+        if (isLogin === "NotloggedIn") {
+            navigate('/')
+        }
+    }, [])
+    return(<>
+
+        {todo.isMain ? (
+
+        <div className="flex flex-col justify-center items-center  gap-4" >
 
             <div className="flex gap-2 text-center ">
-                <span className="font-serif font-semibold">📗{ todosData.name }</span>
-                <div className="flex gap-1">
+                <span className="font-serif font-semibold">📗{ todo.name }</span>
+                <div className="flex  gap-1">
                     <button onClick={ (e) => handleNewTask(e, true) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium">MainTask</button>
-                    {/* {!todosDatas.items.length === 0 ? <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>:} */ }
-                    <button  onClick={ (e) => handleNewTask(e, false) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium" >SubTask</button>
+                    {/* {!todos.items.length === 0 ? <button onClick={ (e) => handleNewTask(e, false) } style={ { background: blue[400], borderRadius: 5, padding: 3, marginRight: 4, fontSize: 12 } }>+subTask</button>:} */ }
+                    <button onClick={ (e) => handleNewTask(e, false) } className="bg-blue-500 rounded-lg px-2 h-8 text-white font-medium" >SubTask</button>
                 </div>
             </div>
 
-            <div className={ `${expand ? "flex" : "hidden"} justify-center mt-4 ` }  >
+            <div className={ `${expand ? "flex" : "hidden"} justify-center  ` }  >
                 { showInput.visible && (
                     <div  ><span>{ showInput.isMain ? "📗" : "📄" }</span>
                         <input placeholder='type....' autoFocus
@@ -61,9 +61,11 @@ const AllTask = () => {
 
                         /></div>
                 ) }
-                { todosData.items.map((items) => (
-                    <AllTask todosData={ items } handleInsertNode={ handleInsertNode } />
+                { todo.items.map((items) => (
+                    <AllTask todo={ items } handleInsertNode={ handleInsertNode } />
                 )) }</div>
-        </div>) : (<span >📄{ todosData.name }</span>)
+        </div>) : (<span >📄{ todo.name }</span>)}
+    </>
+    )
 }
 export default AllTask   
