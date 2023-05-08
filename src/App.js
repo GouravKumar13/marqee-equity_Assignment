@@ -1,22 +1,39 @@
 import { useState } from "react";
+import SignIn from "./signIn/signIn";
+import SignUp from "./signIn/signUp";
 
-import todos from "./data/Todsdata";
 import AllTask from "./Components/AllTask";
-import useTraverseTree from "./hooks/useTraverseTree";
+import Header from "./Components/Header";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 
-export default function App() {
-  const[todoData , setTododata] =useState(todos)
-  const {insertNode} = useTraverseTree()
+export const AppRoute = createBrowserRouter([{
+  path: "/",
+  element: <App />,
+  children: [{
+    path: "/",
+    element: <SignIn/>,
+  
+  }, {
+    path: "/alltask",
+    element: <AllTask />
+  }, {
+    path: "/signup",
+    element: <SignUp />
+  }]
+}])
+export default function App () {
 
-  const handleInsertNode = (folderId, item, isMain) => {
-    const finalData = insertNode(todoData, folderId, item, isMain)
-    console.log(finalData)
-    setTododata(finalData)
-  }
+  
   return (
     <div className="App">
-      <AllTask handleInserNode ={handleInsertNode} todo = {todoData}/>
+      <Header />
       
+      <Outlet/>
+
+      
+
+
+
     </div>
   );
 }

@@ -1,10 +1,10 @@
-const todos = {
+const todo = {
     id:"1",
-  name: "TODOS-List",
-  isMain: true,
+  name: "TODOS-LIST",
+  isMain: true, 
   items: [
    
   ]
 
 }
-export default todos
+export default todo
